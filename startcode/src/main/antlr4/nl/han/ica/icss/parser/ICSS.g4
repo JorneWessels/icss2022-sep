@@ -19,6 +19,7 @@ SCALAR: [0-9]+;
 
 //Color value takes precedence over id idents
 COLOR: '#' [0-9a-f] [0-9a-f] [0-9a-f] [0-9a-f] [0-9a-f] [0-9a-f];
+//WIDTH: PIXELSIZE | PERCENTAGE;
 
 //Specific identifiers for id's and css classes
 ID_IDENT: '#' [a-z0-9\-]+;
@@ -45,5 +46,10 @@ ASSIGNMENT_OPERATOR: ':=';
 
 
 //--- PARSER: ---
-stylesheet: EOF;
-
+stylesheet: stylerule+;
+stylerule: tagSelector OPEN_BRACE declarations CLOSE_BRACE;
+tagSelector: LOWER_IDENT;
+declarations: declaration (SEMICOLON declaration)* SEMICOLON;
+declaration: property COLON value;
+property: 'width' | 'background-color';
+value: PIXELSIZE | COLOR | PERCENTAGE;
