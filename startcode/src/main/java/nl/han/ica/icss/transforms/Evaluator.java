@@ -9,6 +9,7 @@ import nl.han.ica.icss.ast.operations.AddOperation;
 import nl.han.ica.icss.ast.operations.MultiplyOperation;
 import nl.han.ica.icss.ast.operations.SubtractOperation;
 
+import javax.swing.text.Style;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -23,8 +24,41 @@ public class Evaluator implements Transform {
     @Override
     public void apply(AST ast) {
         //variableValues = new HANLinkedList<>();
-
+        applyStyleshees((Stylesheet)ast.root);
     }
 
-    
+    private void applyStyleshees(Stylesheet node) {
+        applyStylerule((Stylerule) node.getChildren().get(0));
+    }
+
+    private void applyStylerule(Stylerule node) {
+        for (ASTNode child : node.getChildren()) {
+            if(child instanceof Declaration){
+                applyDeclaration((Declaration) child);
+            }
+        }
+    }
+
+    private void applyDeclaration(Declaration node) {
+        node.expression = evalExpression(node.expression);
+    }
+
+    private Expression evalExpression(Expression expression) {
+        //kijk hier beneden naar code, kan bijna alles hergebruiken
+    }
+
+    /*
+    public double evaluate() {
+        if (left == null && right == null) {
+            return Double.valueOf(content);
+        } else if (content.equals("+")) {
+            return left.evaluate() + right.evaluate();
+        } else if (content.equals("*")) {
+            return left.evaluate() * right.evaluate();
+        } else if (content.equals("-")) {
+            return left.evaluate() - right.evaluate();
+        } else {
+            return Double.valueOf(content);
+        }
+    */
 }
